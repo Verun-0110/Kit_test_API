@@ -2,17 +2,17 @@ import sender_stand_request
 import data
 
 
-# создание тела набора
+# Создание тела набора
 def get_kit_body(name):
     return {"name": name}
 
 
-# получение Token пользователя
+# Получение Token пользователя
 def get_user_token():
     return sender_stand_request.post_new_user(data.user_body).json()["authToken"]
 
 
-# Позитивные проверки по валидции в названии набора
+# Отправка запроса для позитивной проверки
 def positive_assert(name):
     kit_response = sender_stand_request.post_new_client_kit(get_user_token(), get_kit_body(name))
 
@@ -54,13 +54,14 @@ def test_create_kit_name_has_number_in_kit_body_get_success_response():
     positive_assert("123")
 
 
-# Негативные проверки по валидации в названии набора
+# Отправка запроса для негативной проверки
 def negative_assert_kit(body):
     response = sender_stand_request.post_new_client_kit(get_user_token(), body)
     assert response.status_code == 400
     assert response.json()["code"] == 400
 
 
+# Негативные проверки по валидации в названии набора
 def negative_assert_kit_name(name):
     negative_assert_kit(get_kit_body(name))
 
