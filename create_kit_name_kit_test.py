@@ -2,7 +2,7 @@ import sender_stand_request
 import data
 
 
-# создание имя набора
+# создание тела набора
 def get_kit_body(name):
     return {"name": name}
 
