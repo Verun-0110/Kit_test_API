@@ -6,6 +6,7 @@ import data
 def get_kit_body(name):
     return {"name": name}
 
+
 # получение Token пользователя
 def get_user_token():
     return sender_stand_request.post_new_user(data.user_body).json()["authToken"]
@@ -54,10 +55,14 @@ def test_create_kit_name_has_number_in_kit_body_get_success_response():
 
 
 # Негативные проверки по валидации в названии набора
-def negative_assert_kit_name(name):
-    response = sender_stand_request.post_new_client_kit(get_user_token(), get_kit_body(name))
+def negative_assert_kit(body):
+    response = sender_stand_request.post_new_client_kit(get_user_token(), body)
     assert response.status_code == 400
     assert response.json()["code"] == 400
+
+
+def negative_assert_kit_name(name):
+    negative_assert_kit(get_kit_body(name))
 
 
 # Негативные проверки - количество символов меньше допустимого (0)
@@ -72,7 +77,7 @@ def test_create_kit_name_512_letter_in_get_error_response():
 
 # Негативные проверки - параметр не передан в запрос
 def test_create_kit_no_name_in_get_error_response():
-    negative_assert_kit_name(None)
+    negative_assert_kit({})
 
 
 # Негативные проверки - передан другой тип параметра
